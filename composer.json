@@ -1,0 +1,18 @@
+{
+    "name": "drupol/phpspec-annotation",
+    "description": "PHPSpec extension that allows you to use annotated methods for tests.",
+    "type": "library",
+    "license": "MIT", 
+    "authors": [
+        {
+            "name": "Pol Dellaiera",
+            "email": "pol.dellaiera@protonmail.com"
+        }
+    ],
+    "require": {
+        "php": ">= 7.0"
+    },
+    "autoload": {
+        "psr-4": { "drupol\\PhpspecAnnotation\\": "src"}
+    }
+}
