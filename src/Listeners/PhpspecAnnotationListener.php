@@ -2,7 +2,7 @@
 
 namespace drupol\PhpspecAnnotation\Listeners;
 
-use PhpSpec\Event\SuiteEvent;
+use PhpSpec\Event\SpecificationEvent;
 use PhpSpec\Loader\Node\ExampleNode;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
@@ -15,24 +15,28 @@ class PhpspecAnnotationListener implements EventSubscriberInterface
   public static function getSubscribedEvents()
   {
     return [
-      'beforeSuite' => ['beforeSuite', -100],
+      'beforeSpecification' => ['beforeSpecification', -100],
     ];
   }
 
   /**
    * @inheritDoc
    */
-  public function beforeSuite(SuiteEvent $suiteEvent)
-  {
-    $suite = $suiteEvent->getSuite();
+  public function beforeSpecification(SpecificationEvent $specificationEvent) {
+    $spec = $specificationEvent->getSpecification();
 
-    foreach ($suite->getSpecifications() as $spec) {
-      foreach ($spec->getClassReflection()->getMethods() as $method) {
-        if (!preg_match('/^(it|its)[^a-zA-Z]/', $method->getName())) {
-          if ($title = $this->getName($method->getDocComment())) {
-            $spec->addExample(new ExampleNode($title, $method));
-          }
+    foreach ($spec->getClassReflection()->getMethods() as $method) {
+      if (!preg_match('/^(it|its)[^a-zA-Z]/', $method->getName())) {
+        if ($title = $this->getName($method->getDocComment())) {
+          $spec->addExample(new ExampleNode($title, $method));
         }
+      }
+    }
+
+    foreach ($spec->getExamples() as $example) {
+      if ($title = $this->getName($example->getFunctionReflection()->getDocComment())) {
+        // TODO: https://github.com/phpspec/phpspec/pull/1193
+        //$example->setTitle($title);
       }
     }
   }
