@@ -35,8 +35,7 @@ class PhpspecAnnotationListener implements EventSubscriberInterface
 
     foreach ($spec->getExamples() as $example) {
       if ($title = $this->getName($example->getFunctionReflection()->getDocComment())) {
-        // TODO: https://github.com/phpspec/phpspec/pull/1193
-        //$example->setTitle($title);
+        $example->setTitle($title);
       }
     }
   }
