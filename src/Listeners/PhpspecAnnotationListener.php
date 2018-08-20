@@ -10,7 +10,7 @@ class PhpspecAnnotationListener implements EventSubscriberInterface
 {
 
   /**
-   * @inheritDoc
+   * @inheritdoc
    */
   public static function getSubscribedEvents()
   {
@@ -20,7 +20,7 @@ class PhpspecAnnotationListener implements EventSubscriberInterface
   }
 
   /**
-   * @inheritDoc
+   * @inheritdoc
    */
   public function beforeSpecification(SpecificationEvent $specificationEvent) {
     $spec = $specificationEvent->getSpecification();
@@ -47,30 +47,33 @@ class PhpspecAnnotationListener implements EventSubscriberInterface
    *
    * @return string
    */
-  protected function getName(string $docComment): string
+  protected function getName($docComment)
   {
-    return current(array_map(
-      function($tag) {
-        preg_match('#@name ([^ ].*)#', $tag, $match);
+    return current(
+      array_map(
+        function($tag) {
+          preg_match('#@name ([^ ].*)#', $tag, $match);
 
-        return $match[1];
-      },
-      array_filter(
-        array_map(
-          'trim',
-          explode(
+          return $match[1];
+        },
+        array_filter(
+          array_map(
+            'trim',
+            explode(
             "\n",
-            str_replace(
+              str_replace(
               "\r\n",
               "\n",
-              $docComment
+                $docComment
+              )
             )
-          )
-        ),
-        function($docline) {
-          return FALSE !== strpos($docline, '@name');
-        }
+          ),
+          function($docline) {
+            return FALSE !== strpos($docline, '@name');
+          }
+        )
       )
-    ));
+    );
   }
 }
+

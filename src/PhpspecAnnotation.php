@@ -8,7 +8,7 @@ use PhpSpec\ServiceContainer;
 class PhpspecAnnotation implements \PhpSpec\Extension
 {
   /**
-   * @param ServiceContainer $container
+   * @inheritdoc
    */
   public function load(ServiceContainer $container, array $params)
   {
